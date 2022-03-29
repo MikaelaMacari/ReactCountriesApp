@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CardComponent from "./CardComponent";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
@@ -15,28 +15,12 @@ import { CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
 import { CountryData } from "../types";
 
-interface CountryProps {
-  darkBg: {
-    backgroundColor: string;
-  };
-  darkForm: {
-    backgroundColor: string;
-    color: string;
-  };
-  darkMode: boolean;
-  changeDarkMode: () => void;
-}
-const CountryContainer: FC<CountryProps> = ({
-  darkBg,
-  darkMode,
-  darkForm,
-  changeDarkMode,
-}) => {
+const CountryContainer = ({}) => {
   const [data, setData] = useState<[CountryData] | null>(null);
   const [filteredData, setFilteredData] = useState<Array<CountryData> | null>(
     null
   );
-  const [filterWord, setFilterWord] = useState();
+  const [filterWord, setFilterWord] = useState("");
   const [continent, setContinent] = useState("");
 
   async function getData() {
@@ -48,8 +32,8 @@ const CountryContainer: FC<CountryProps> = ({
 
   const searchCountry = (filterString: string) => {
     const filteredItems =
-      filteredData &&
-      filteredData.filter((item) =>
+      data &&
+      data.filter((item) =>
         item.name.toLowerCase().includes(filterString.toLowerCase())
       );
     if (filterString) {
@@ -60,9 +44,9 @@ const CountryContainer: FC<CountryProps> = ({
   };
   const searchByRegion = (filterString: string) => {
     const filteredByRegion =
-      filteredData &&
-      filteredData.filter((item) =>
-        item.region.toLowerCase().includes(filterString.toLocaleLowerCase())
+      data &&
+      data.filter((item) =>
+        item.region.toLowerCase().includes(filterString.toLowerCase())
       );
     console.log(filteredByRegion);
     if (filterString) {
@@ -71,69 +55,97 @@ const CountryContainer: FC<CountryProps> = ({
       setFilteredData(data);
     }
   };
+
   useEffect(() => {
     getData();
   }, []);
 
   return (
-    <Container sx={{ mt: 5, ...(darkMode && darkBg) }}>
-      <Box
-        sx={{ display: "flex", justifyContent: "space-between", mt: 5, mb: 5 }}
+    <Container>
+      <Grid
+        container
+        rowSpacing={2}
+        columnSpacing={{ lg: 12, md: 15, sm: 20 }}
+        sx={{ mb: 6 }}
       >
-        <TextField
-          fullWidth
-          placeholder="Search for a country..."
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon sx={{ ...(darkMode && darkForm) }} />
-              </InputAdornment>
-            ),
-          }}
-          sx={{
-            width: 450,
-            ...(darkMode && darkForm),
-            "&:focus-visible": {
-              outline: "none",
-            },
-          }}
-          value={filterWord}
-          onChange={(e) => {
-            setTimeout(() => searchCountry(e.target.value), 3000);
-          }}
-        />
-        <FormControl sx={{ width: 220, ...(darkMode && darkForm) }}>
-          <InputLabel sx={{ ...(darkMode && darkForm) }}>
-            Filter by Region
-          </InputLabel>
-          <Select
-            value={continent}
-            label="Filter by Region"
-            onChange={({ target: { value } }) => {
-              searchByRegion(value);
+        <Grid item lg={9} md={8} sm={6} xs={12}>
+          <TextField
+            fullWidth
+            focused={false}
+            style={{ color: "var(--secondary-text)" }}
+            placeholder="Search for a country..."
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon sx={{ color: "var(--secondary-text)" }} />
+                </InputAdornment>
+              ),
+            }}
+            sx={{
+              color: "var(--secondary-text)",
+              backgroundColor: "var(--secondary-bg)",
+              "&:focus-visible": {
+                outline: "none",
+                border: "none",
+              },
+              "&:focused": {
+                border: "none",
+                outline: "none",
+              },
+              "&:hover": {
+                border: "none",
+                outline: "none",
+              },
+            }}
+            value={filterWord}
+            onChange={(e) => {
+              setFilterWord(e.target.value);
+              searchCountry(e.target.value);
+            }}
+          />
+        </Grid>
+        <Grid item lg={3} md={4} sm={6} xs={12}>
+          <FormControl
+            focused={false}
+            sx={{
+              width: 220,
+              backgroundColor: "var(--secondary-bg)",
+              color: "var(--primary-text)",
             }}
           >
-            <MenuItem
-              value=""
-              onClick={() => {
-                setFilteredData(data);
+            <InputLabel sx={{ color: "var(--primary-text)" }}>
+              Filter by Region
+            </InputLabel>
+            <Select
+              value={continent}
+              label="Filter by Region"
+              onChange={({ target: { value } }) => {
+                searchByRegion(value);
+                setContinent(value);
               }}
             >
-              All
-            </MenuItem>
-            <MenuItem value="Africa">Africa</MenuItem>
-            <MenuItem value="America">America</MenuItem>
-            <MenuItem value="Asia">Asia</MenuItem>
-            <MenuItem value="Europe">Europe</MenuItem>
-            <MenuItem value="Oceania">Oceania</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+              <MenuItem
+                value=""
+                onClick={() => {
+                  setFilteredData(data);
+                }}
+              >
+                All
+              </MenuItem>
+              <MenuItem value="Africa">Africa</MenuItem>
+              <MenuItem value="America">America</MenuItem>
+              <MenuItem value="Asia">Asia</MenuItem>
+              <MenuItem value="Europe">Europe</MenuItem>
+              <MenuItem value="Oceania">Oceania</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
       <Grid container spacing={6}>
         {filteredData ? (
           filteredData.map((country, i) => {
             return (
-              <Grid item lg={3} key={i}>
+              <Grid item lg={3} md={4} sm={6} xs={12} key={i}>
                 <Link
                   to={`country/${country.name}`}
                   style={{ textDecoration: "none" }}
