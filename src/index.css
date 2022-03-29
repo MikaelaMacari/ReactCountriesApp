@@ -1,6 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&display=swap');
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: -apple-system, 'Nunito Sans', 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -8,6 +9,34 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: 'Nunito Sans', sans-serif;
+}
+body[data-theme=light] {
+  --primary-text: #111517;
+  --secondary-text: #858585;/*for input placeholder and icon*/
+  --primary-bg: #fafafa;/*main background*/
+  --secondary-bg: #ffffff; /*light mode elements background of cards, header, dark mode text*/
+}
+body[data-theme=dark] {
+  --primary-text: #ffffff;
+  --secondary-text: #ffffff;
+  --primary-bg: #202c37;/*main background*/
+  --secondary-bg: #2b3945; /*background of cards header inputs*/
+}
+body {
+  background-color: var(--primary-bg);
+}
+.MuiOutlinedInput-input,
+.MuiInputBase-input ,
+.MuiInputBase-inputAdornedStart,
+.css-1o9s3wi-MuiInputBase-input-MuiOutlinedInput-input{
+  border: none!important;
+  outline: none!important;
+  color: var(--secondary-text)!important;
+}
+.MuiOutlinedInput-root:hover,
+.MuiOutlinedInput-input:hover
+{
+  border: none!important;
+  outline: none!important;
 }

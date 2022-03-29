@@ -15,7 +15,7 @@ interface CardComponentProps {
 
 const CardComponent : FC<CardComponentProps> = (props) => {
   return (
-    <Card>
+    <Card sx={{backgroundColor: "var(--secondary-bg)"}}>
       <CardActionArea>
         <CardMedia
           component="img"
@@ -23,30 +23,30 @@ const CardComponent : FC<CardComponentProps> = (props) => {
           image={props.imgUrl}
           alt={props.name}
         />
-        <CardContent>
+        <CardContent sx={{ color: "var(--primary-text)"}}>
           <Typography
             gutterBottom
             variant="h6"
-            sx={{ fontWeight: "bold" }}
+            sx={{ fontWeight: "bold",}}
             component="div"
           >
             {props.name}
           </Typography>
           <Typography gutterBottom sx={{ fontWeight: "bold" }} component="div">
             Population:
-            <Typography color="text.secondary" sx={{ display: "inline" }}>
+            <Typography  sx={{ display: "inline", pl: 1 }}>
               {props.population}
             </Typography>
           </Typography>
           <Typography gutterBottom sx={{ fontWeight: "bold" }} component="div">
             Region:
-            <Typography color="text.secondary" sx={{ display: "inline" }}>
+            <Typography  sx={{ display: "inline", pl: 1  }}>
               {props.region}
             </Typography>
           </Typography>
           <Typography gutterBottom sx={{ fontWeight: "bold" }} component="div">
             Capital:
-            <Typography color="text.secondary" sx={{ display: "inline" }}>
+            <Typography  sx={{ display: "inline", pl: 1  }}>
               {props.capital}
             </Typography>
           </Typography>
